@@ -7,3 +7,14 @@ data <- data.frame (
 )
 plot(data$output ~ data$input, main="Distribution of the pension relative to the salary", xlab="Salary", ylab="Pension")
 
+
+# 2. normalizing the data, plotting
+min.input <- min(data$input)
+min.output <- min(data$output)
+range.input <- diff(range(data$input))
+range.output <- diff(range(data$output))
+data.norm <- data.frame (
+  input = (data$input - min.input) / range.input,
+  output = (data$output - min.output) / range.output
+)
+plot(data.norm$output ~ data.norm$input, main="Distribution of the pension relative to the salary (normalized)", xlab="Salary", ylab="Pension")
