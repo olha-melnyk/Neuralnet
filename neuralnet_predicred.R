@@ -22,3 +22,9 @@ plot(data.norm$output ~ data.norm$input, main="Distribution of the pension relat
 # 3. neural network
 net <- neuralnet(output ~ input, data.norm)
 
+# 4. test the output
+testdata <- seq(0, 25000, by=500)
+testdata.norm <- (testdata - min.input) / range.input
+result <- round(compute(net, testdata.norm)$net.result * range.output + min.output)
+plot(testdata, result, main="Predicred outcome", xlab="Salary", ylab="Pension")
+
