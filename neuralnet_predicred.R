@@ -18,3 +18,7 @@ data.norm <- data.frame (
   output = (data$output - min.output) / range.output
 )
 plot(data.norm$output ~ data.norm$input, main="Distribution of the pension relative to the salary (normalized)", xlab="Salary", ylab="Pension")
+
+# 3. neural network
+net <- neuralnet(output ~ input, data.norm)
+
