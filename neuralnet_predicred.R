@@ -17,7 +17,29 @@ names(data_threats)
 data_threats <- data_threats[order(data_threats$year, data_threats$region_abbr, data_threats$index_abbr),]
 data_threats <- subset(data_threats, data_threats$year >= '2005')
 head(data_threats)
+library(reshape)
+threats_data <- reshape(data_threats, idvar = c("region_abbr","index_abbr"), timevar = "year", direction = "wide")
+head(threats_data)
+# missing value
 
+sum(is.na(threats_data))
+library(zoo)
+missing_approx <- function(x) {
+  return (na.approx(x,na.rm = F))
+}
+
+missing_spline <- function(x) {
+  return (na.spline(x, na.rm = F))
+}
+
+data <- threats_data
+for( i in 3:ncol(data)){ 
+  m <- missing_approx(data[,i])
+  data[,i] <- missing_spline(m)
+}
+head(data)
+sum(is.na(data))
+colnames(data)[3: NCOL(data)] <- 2005:2016
 
 
 
