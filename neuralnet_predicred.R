@@ -20,8 +20,8 @@ head(data_threats)
 library(reshape)
 threats_data <- reshape(data_threats, idvar = c("region_abbr","index_abbr"), timevar = "year", direction = "wide")
 head(threats_data)
-# missing value
 
+# missing value
 sum(is.na(threats_data))
 library(zoo)
 missing_approx <- function(x) {
@@ -40,6 +40,23 @@ for( i in 3:ncol(data)){
 head(data)
 sum(is.na(data))
 colnames(data)[3: NCOL(data)] <- 2005:2016
+library(tidyr)
+data =  gather(data, year, values, 3:14 , factor_key = FALSE)
+head(data)
+sum(is.na(data))
+data_cast <- cast(data, region_abbr + year ~ index_abbr)
+head(data_cast)
+sum(is.na(data_cast))
+data_cast <- data_cast[, -which(colMeans(is.na(data_cast)) > 0.5)]
+sum(is.na(data_cast))
+data <- data_cast
+# Random sampling
+samplesize = 0.60 * nrow(data)
+set.seed(80)
+index = sample( seq_len ( nrow ( data ) ), size = samplesize )
+# Create training and test set
+datatrain = data[ index, ]
+datatest = data[ -index, ]
 
 
 
